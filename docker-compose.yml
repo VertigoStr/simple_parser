@@ -1,0 +1,25 @@
+version: '3.0'
+
+services:
+  api-parser:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    depends_on:
+      - mongo-parser
+    volumes:
+      - .:/srv/project/src
+    environment:
+      - FLASK_APP=api.py
+    restart: on-failure
+    ports:
+      - 8888:8888
+
+  mongo-parser:
+    image: mongo:latest
+    volumes:
+      - parser-mongo-db:/data/db
+    restart: on-failure
+
+volumes:
+  parser-mongo-db: {}
